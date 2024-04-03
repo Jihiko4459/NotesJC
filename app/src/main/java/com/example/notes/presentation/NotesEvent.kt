@@ -6,13 +6,13 @@ import com.example.notes.data.Note
 // в версии Игуана с списке нет sealed class
 //поэтому нужно сначала создать обычный класс,
 // а потом дописать, а затем class поменять на interface
-sealed interface NotesEvent {
-    object SortNotes:NotesEvent
+sealed interface NotesEvent {//sealed - закрытый
+    object SortNotes:NotesEvent//объект сортировки
 
-    data class DeleteNote(val note:Note):NotesEvent
+    data class DeleteNote(val note:Note):NotesEvent//нужно для удаления заметки Note в бд
 
     data class SaveNote(
         val title:String,
         val description: String
-    ):NotesEvent
+    ):NotesEvent//сохранение заметки Note
 }

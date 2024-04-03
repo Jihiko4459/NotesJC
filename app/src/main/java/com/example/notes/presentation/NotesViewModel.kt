@@ -13,12 +13,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-//это модель представления, которая реагироать на все действия
+//это модель представления, которая будет реагироать на все действия
 // пользователя и выполнять соответсующие операции, связанные с бд
 class NotesViewModel(private val dao:NoteDao):ViewModel() {
 
-    private val isSortedByDateAdded= MutableStateFlow(true)
+    private val isSortedByDateAdded= MutableStateFlow(true)//указываем для того, чтобы список сортировался по дате добавления
 
+    //notes, которая позволяет сортировать либо по дате добавления. либо по заголовку
     private var notes=
         isSortedByDateAdded.flatMapLatest {sort->
             if(sort){
@@ -27,7 +28,7 @@ class NotesViewModel(private val dao:NoteDao):ViewModel() {
             else{
                 dao.getNotesOrderByTitled()
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())//если условие не соответсвует, то мы получим пустой список
 
     val _state= MutableStateFlow(NoteState())
     val state=
@@ -37,11 +38,11 @@ class NotesViewModel(private val dao:NoteDao):ViewModel() {
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), NoteState())
 
-    fun onEvent(event: NotesEvent){
+    fun onEvent(event: NotesEvent){//функция событий в бд
         when(event){
             is NotesEvent.DeleteNote ->
             {
-                viewModelScope.launch {
+                viewModelScope.launch {//мы окружаем функцию областью действия ViewModel, потому что она должна вызываться только из сопрограммы или из другой функции приостановки
                     dao.deleteNote(event.note)
                 }
 
@@ -51,16 +52,16 @@ class NotesViewModel(private val dao:NoteDao):ViewModel() {
                         title = state.value.title.value,
                         description=state.value.description.value,
                         dateAdded = System.currentTimeMillis()
-                    )
+                    )//создаем нашу заметку
                 viewModelScope.launch {
                     dao.upsertNote(note)
-                }
+                }//обновляем или добавляем заметку в бд
                 _state.update {
                     it.copy(
                         title = mutableStateOf(""),
                         description = mutableStateOf("")
                     )
-                }
+                }//после того, как мы сохранили заметку, мы делаем _state пустым
             }
             NotesEvent.SortNotes -> {
                 isSortedByDateAdded.value= !isSortedByDateAdded.value

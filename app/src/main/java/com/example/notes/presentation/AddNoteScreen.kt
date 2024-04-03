@@ -32,13 +32,13 @@ fun AddNoteScreen(
                     title = state.title.value,
                     description = state.description.value
                 ))
-                navController.popBackStack()
+                navController.popBackStack()//возврат на предыдущий экран, в нашем случае NotesScreen
             }) {
                 Icon(imageVector = Icons.Rounded.Check,
                     contentDescription ="Save Note" )
 
             }
-        }
+        }//кнопка сохранения заметки
     ) {paddingValues ->
         Column(
             modifier = Modifier
@@ -52,14 +52,14 @@ fun AddNoteScreen(
                 onValueChange = {
                     state.title.value=it
                 },
-                textStyle= TextStyle(
+                textStyle= TextStyle(//настраиваем стиль текста
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 17.sp
                 ),
-                placeholder={
+                placeholder={//=hint
                     Text(text="Title")
                 }
-            )
+            )//Текстовое поле для ввода заголовка заметки
             TextField(
                 modifier = Modifier.fillMaxWidth()
                     .padding(16.dp),
@@ -71,10 +71,11 @@ fun AddNoteScreen(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 17.sp
                 ),
-                placeholder={
+                placeholder={//=hint
                     Text(text="Description")
                 }
-            )
+            )//Текстовое поле для ввода описания заметки
+
 
         }
     }

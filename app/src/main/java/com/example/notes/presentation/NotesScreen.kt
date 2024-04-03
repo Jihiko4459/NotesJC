@@ -41,7 +41,7 @@ fun NotesScreen(
     onEvent:(NotesEvent)->Unit
     ){
     Scaffold(
-        topBar ={
+        topBar ={//ToolBar
             Row(
                 modifier= Modifier
                     .fillMaxWidth()
@@ -63,7 +63,7 @@ fun NotesScreen(
                         modifier = Modifier.size(35.dp),
                         tint = MaterialTheme.colorScheme.onPrimary)
                     
-                }
+                }//кнопка сортировки
             }
         },
         floatingActionButton = {
@@ -74,7 +74,7 @@ fun NotesScreen(
                 Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add new note")
 
             }
-        }
+        }//кнопка добавления заметки
     ) {paddingValues ->
         LazyColumn (
             contentPadding = paddingValues,
@@ -87,13 +87,13 @@ fun NotesScreen(
                     index = index,
                     onEvent=onEvent)
             }
-        }
+        }//отвечает за выход функции отображения списка заметок
 
     }
 }
 
 @Composable
-fun NoteItem(
+fun NoteItem(//функции отображения списка заметок
     state: NoteState,
     index: Int,
     onEvent:(NotesEvent)->Unit
@@ -108,16 +108,16 @@ fun NoteItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(
+            Text(//заголовок нашей заметки
                 text = state.notes[index].title,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))//расстояние м/у заголовком и описанием заметки
 
-            Text(
+            Text(//описание заметки
                 text = state.notes[index].description,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -129,6 +129,6 @@ fun NoteItem(
                 modifier = Modifier.size(35.dp),
                 tint = MaterialTheme.colorScheme.onPrimaryContainer)
 
-        }
+        }//кнопка удаления заметки
     }
 }

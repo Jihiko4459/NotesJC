@@ -26,11 +26,11 @@ class MainActivity : ComponentActivity() {
 
     private val database by lazy {
         Room.databaseBuilder(
-            applicationContext,
-            NoteDatabase::class.java,
-            "notes.db"
+            applicationContext,//передаем контекст приложения
+            NoteDatabase::class.java,//и класс бд
+            "notes.db"//название бд
         ).build()
-    }
+    }//создаем объект бд
 
     private val viewModel by viewModels<NotesViewModel>(
         factoryProducer = {
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    )
+    )//создаем экземпляр viewModel и подключаем к ней бд
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
